@@ -1,0 +1,366 @@
+<scene version="2.1.0">
+	<default name="spp" value="1024" />
+	<default name="resx" value="512" />
+	<default name="resy" value="575" />
+	<integrator type="path" name="temp0">
+		<integer name="max_depth" value="12" />
+	</integrator>
+	<sensor type="perspective" name="temp2">
+		<string name="fov_axis" value="y" />
+		<float name="fov" value="49.134342" />
+		<float name="principal_point_offset_x" value="0.000000" />
+		<float name="principal_point_offset_y" value="-0.000000" />
+		<float name="near_clip" value="0.100000" />
+		<float name="far_clip" value="100.000000" />
+		<transform name="to_world">
+			<rotate x="1" angle="179.9352821363813" />
+			<rotate y="1" angle="-63.80029843327969" />
+			<rotate z="1" angle="-179.99861165036566" />
+			<translate value="7.054314 2.030854 1.124394" />
+		</transform>
+		<sampler type="correlated" name="sampler">
+			<integer name="sample_count" value="1024" />
+		</sampler>
+		<film type="hdrfilm" name="film">
+			<integer name="width" value="$resx" />
+			<integer name="height" value="$resy" />
+		</film>
+		<float name="shutter_open" value="0.0" />
+		<float name="shutter_close" value="0.0015" />
+	</sensor>
+	<bsdf type="twosided" id="mat-woods" name="mat-woods">
+		<bsdf type="principled" name="bsdf">
+			<texture type="bitmap" name="base_color">
+				<string name="filename" value="textures/cherry-wood-texture.001.jpg" />
+			</texture>
+			<float name="spec_tint" value="0.000000" />
+			<float name="spec_trans" value="0.000000" />
+			<float name="metallic" value="0.000000" />
+			<float name="anisotropic" value="0.000000" />
+			<float name="roughness" value="0.500000" />
+			<float name="sheen" value="0.000000" />
+			<float name="sheen_tint" value="0.500000" />
+			<float name="clearcoat" value="0.000000" />
+			<float name="clearcoat_gloss" value="0.173205" />
+			<float name="specular" value="0.500000" />
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material" name="mat-Material">
+		<bsdf type="diffuse" name="bsdf">
+			<rgb value="0.468459 0.162657 0.495843" name="reflectance" />
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material.004" name="mat-Material.004">
+		<bsdf type="diffuse" name="bsdf">
+			<rgb value="0.000000 0.187814 0.007264" name="reflectance" />
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material.003" name="mat-Material.003">
+		<bsdf type="principled" name="bsdf">
+			<rgb value="0.800000 0.694753 0.022036" name="base_color" />
+			<float name="spec_tint" value="0.000000" />
+			<float name="spec_trans" value="0.000000" />
+			<float name="metallic" value="0.000000" />
+			<float name="anisotropic" value="0.000000" />
+			<float name="roughness" value="0.300000" />
+			<float name="sheen" value="0.000000" />
+			<float name="sheen_tint" value="0.500000" />
+			<float name="clearcoat" value="0.000000" />
+			<float name="clearcoat_gloss" value="0.173205" />
+			<float name="specular" value="0.500000" />
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material.005" name="mat-Material.005">
+		<bsdf type="principled" name="bsdf">
+			<rgb value="0.329891 0.329891 0.329891" name="base_color" />
+			<float name="spec_tint" value="0.000000" />
+			<float name="spec_trans" value="0.000000" />
+			<float name="metallic" value="0.000000" />
+			<float name="anisotropic" value="0.000000" />
+			<float name="roughness" value="0.500000" />
+			<float name="sheen" value="0.000000" />
+			<float name="sheen_tint" value="0.500000" />
+			<float name="clearcoat" value="0.000000" />
+			<float name="clearcoat_gloss" value="0.173205" />
+			<float name="specular" value="0.500000" />
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material.006" name="mat-Material.006">
+		<bsdf type="diffuse" name="bsdf">
+			<texture type="bitmap" name="reflectance">
+				<string name="filename" value="textures/seamless_marble_tile_texture_by_hhh316-d4hzszw.001.jpg" />
+			</texture>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material.007" name="mat-Material.007">
+		<bsdf type="principled" name="bsdf">
+			<rgb value="0.800000 0.800000 0.800000" name="base_color" />
+			<float name="spec_tint" value="0.000000" />
+			<float name="spec_trans" value="0.000000" />
+			<float name="metallic" value="0.000000" />
+			<float name="anisotropic" value="0.000000" />
+			<float name="roughness" value="0.500000" />
+			<float name="sheen" value="0.000000" />
+			<float name="sheen_tint" value="0.500000" />
+			<float name="clearcoat" value="0.000000" />
+			<float name="clearcoat_gloss" value="0.173205" />
+			<float name="specular" value="0.500000" />
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material.008" name="mat-Material.008">
+		<bsdf type="principled" name="bsdf">
+			<rgb value="0.800000 0.800000 0.800000" name="base_color" />
+			<float name="spec_tint" value="0.000000" />
+			<float name="spec_trans" value="0.000000" />
+			<float name="metallic" value="0.000000" />
+			<float name="anisotropic" value="0.000000" />
+			<float name="roughness" value="0.500000" />
+			<float name="sheen" value="0.000000" />
+			<float name="sheen_tint" value="0.500000" />
+			<float name="clearcoat" value="0.000000" />
+			<float name="clearcoat_gloss" value="0.173205" />
+			<float name="specular" value="0.500000" />
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material.009" name="mat-Material.009">
+		<bsdf type="diffuse" name="bsdf">
+			<rgb value="0.608000 0.608000 0.608000" name="reflectance" />
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material.010" name="mat-Material.010">
+		<bsdf type="principled" name="bsdf">
+			<rgb value="0.800000 0.800000 0.800000" name="base_color" />
+			<float name="spec_tint" value="0.000000" />
+			<float name="spec_trans" value="0.000000" />
+			<float name="metallic" value="0.000000" />
+			<float name="anisotropic" value="0.000000" />
+			<float name="roughness" value="0.500000" />
+			<float name="sheen" value="0.000000" />
+			<float name="sheen_tint" value="0.500000" />
+			<float name="clearcoat" value="0.000000" />
+			<float name="clearcoat_gloss" value="0.173205" />
+			<float name="specular" value="0.500000" />
+		</bsdf>
+	</bsdf>
+	<shape type="ply" name="temp4">
+		<string name="filename" value="meshes/Cube_006.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp5">
+		<string name="filename" value="meshes/Cube_007.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp6">
+		<string name="filename" value="meshes/Cube_008.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp7">
+		<string name="filename" value="meshes/Cube_009.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp8">
+		<string name="filename" value="meshes/Cube_010.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp9">
+		<string name="filename" value="meshes/Cube_011.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp10">
+		<string name="filename" value="meshes/Cube_012.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp11">
+		<string name="filename" value="meshes/Cube_013.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp12">
+		<string name="filename" value="meshes/Cube_014.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp13">
+		<string name="filename" value="meshes/Cube_015.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp14">
+		<string name="filename" value="meshes/Cube_016.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp15">
+		<string name="filename" value="meshes/Cube_017.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp16">
+		<string name="filename" value="meshes/Cube_018.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp17">
+		<string name="filename" value="meshes/Cube_019.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp18">
+		<string name="filename" value="meshes/Cube_020.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp19">
+		<string name="filename" value="meshes/Cube_021.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-woods" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp21">
+		<string name="filename" value="meshes/Suzanne.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-Material" name="bsdf" />
+		<animation name="to_world">
+			<transform time="0">
+				<matrix value="0.9385548580048769 -0.08522923763436917 0.33444147689148374 10.335995730636942 -0.16084329575480058 0.7493486764001533 0.642344333869583 -4.322520057155853 -0.30535970670213175 -0.6566679944607752 0.6895959820185139 1.998087256694699 0.0 0.0 0.0 1.0" />
+				<scale value="1" />
+			</transform>
+			<transform time="0.0015">
+				<matrix value="0.9387914797396711 -0.08637320496174977 0.33338266517138637 10.350453345451058 -0.1600982517109027 0.7475069369723831 0.6444941551991588 -4.303573324190607 -0.30499086703034867 -0.658454287006738 0.6879358003920235 2.008531701300704 0.0 0.0 0.0 1.0" />
+				<scale value="1" />
+			</transform>
+		</animation>
+	</shape>
+	<shape type="ply" name="temp25">
+		<string name="filename" value="meshes/Torus.ply" />
+		<ref id="mat-Material.003" name="bsdf" />
+		<animation name="to_world">
+			<transform time="0">
+				<matrix value="0.9745210812949251 -0.22428266802130514 0.002555455591392211 10.493762415154801 0.22428149465025082 0.9745244957602358 0.0007159686062235313 -4.1497741353893005 -0.002650934230210498 -0.0001245840135412918 0.9999965422507812 -0.025709209997275106 0.0 0.0 0.0 1.0" />
+				<scale value="1" />
+			</transform>
+			<transform time="0.0015">
+				<matrix value="0.9745023903184367 -0.22436335023427642 0.0025609658532336948 10.503783374531036 0.22436214689334583 0.9745058181204498 0.0007288524752580653 -4.154626718779398 -0.002659229747250396 -0.00013566532080230067 0.9999965111309889 -0.025694002082207252 0.0 0.0 0.0 1.0" />
+				<scale value="1" />
+			</transform>
+		</animation>
+	</shape>
+	<shape type="ply" name="temp27">
+		<string name="filename" value="meshes/Cube_001.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-Material.004" name="bsdf" />
+		<animation name="to_world">
+			<transform time="0">
+				<matrix value="-0.5581997934791006 -0.82696638995899 0.06737569822378693 3.3486507941890604 0.8293814216685367 -0.5538638742552051 0.07322369868498817 10.643474879355322 -0.02323657388651861 0.09675359029092935 0.9950369882617224 -0.7888163366360154 0.0 0.0 0.0 1.0" />
+				<scale value="1" />
+			</transform>
+			<transform time="0.0015">
+				<matrix value="-0.5560150482073672 -0.8283088176769138 0.06763047316434613 3.378577634814475 0.8307389139662446 -0.5516716319901582 0.07316824070055364 10.632226146476787 -0.023309049198656506 0.09687839758130687 0.9950228696302472 -0.7901084284081881 0.0 0.0 0.0 1.0" />
+				<scale value="1" />
+			</transform>
+		</animation>
+	</shape>
+	<shape type="ply" name="temp29">
+		<string name="filename" value="meshes/Plane.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-Material.006" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp31">
+		<string name="filename" value="meshes/Plane_001.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-Material.007" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp33">
+		<string name="filename" value="meshes/Plane_002.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-Material.008" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp35">
+		<string name="filename" value="meshes/Plane_003.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-Material.009" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<shape type="ply" name="temp37">
+		<string name="filename" value="meshes/Plane_004.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-Material.010" name="bsdf" />
+		<transform name="to_world">
+			<scale value="1" />
+		</transform>
+	</shape>
+	<emitter type="point">
+		<transform name="to_world">
+			<rotate x="1" angle="179.9352821363813" />
+			<rotate y="1" angle="-63.80029843327969" />
+			<rotate z="1" angle="-179.99861165036566" />
+			<translate value="7.054314 2.030854 1.124394" />
+		</transform>
+		<rgb name="intensity" value="100" />
+	</emitter>
+</scene>

@@ -393,6 +393,7 @@ protected:
 
 protected:
     field<Transform4f, ScalarTransform4f> m_to_world;
+    ref<const AnimatedTransform> m_transform;
     ref<Medium> m_medium;
     Shape *m_shape = nullptr;
     bool m_needs_sample_2 = true;

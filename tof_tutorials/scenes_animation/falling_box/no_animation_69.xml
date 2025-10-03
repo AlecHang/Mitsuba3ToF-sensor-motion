@@ -1,0 +1,55 @@
+<scene version="2.1.0">
+	<default name="spp" value="1024" />
+	<default name="resx" value="1280" />
+	<default name="resy" value="720" />
+	<integrator type="path">
+		<integer name="max_depth" value="12" />
+	</integrator>
+	<sensor type="perspective" id="Camera">
+		<string name="fov_axis" value="x" />
+		<float name="fov" value="39.597755" />
+		<transform name="to_world">
+			<rotate x="1" angle="-153.5592908827048" />
+			<rotate y="1" angle="-46.691938147394204" />
+			<rotate z="1" angle="-179.999991348578" />
+			<translate value="7.358891 6.350466 6.925791" />
+		</transform>
+		<sampler type="independent">
+			<integer name="sample_count" value="1024" />
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="$resx" />
+			<integer name="height" value="$resy" />
+		</film>
+		<float name="shutter_open" value="0.0" />
+		<float name="shutter_close" value="0.0015" />
+	</sensor>
+	<bsdf type="twosided" id="mat-Material">
+		<bsdf type="diffuse" />
+	</bsdf>
+	<bsdf type="twosided" id="default-bsdf">
+		<bsdf type="diffuse" />
+	</bsdf>
+	<shape type="ply" id="mesh-Cube">
+		<string name="filename" value="meshes/Cube.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-Material" name="bsdf" />
+		<transform name="to_world">
+			<matrix value="0.9720827730287664 0.2323337201522757 0.03280079411734222 -0.5898139965171458 -0.23352828570704395 0.9444077717063399 0.23142690195554116 -2.287294486948103 0.022790844385016926 -0.2326260571866517 0.9722992938577517 0.6502120044678789 0.0 0.0 0.0 1.0" />
+		</transform>
+	</shape>
+	<shape type="ply" id="mesh-Plane">
+		<string name="filename" value="meshes/Plane.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="default-bsdf" name="bsdf" />
+	</shape>
+	<emitter type="point">
+		<transform name="to_world">
+			<rotate x="1" angle="-153.5592908827048" />
+			<rotate y="1" angle="-46.691938147394204" />
+			<rotate z="1" angle="-179.999991348578" />
+			<translate value="7.358891 6.350466 6.925791" />
+		</transform>
+		<rgb name="intensity" value="100" />
+	</emitter>
+</scene>

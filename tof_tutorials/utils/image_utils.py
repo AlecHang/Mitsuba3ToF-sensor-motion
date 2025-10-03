@@ -30,6 +30,92 @@ def to_png_image(image):
 def rgb2luminance(img):
     return (0.2126 * img[...,0]) + (0.7152 * img[...,1]) + (0.0722 * img[...,2])
 
+def save_speed_image(image, output_path, filename, colorbar_also=False,
+     velocity_range=5, resize=1, **kwargs):
+    cm = plt.get_cmap('RdBu')
+    norm = plt.Normalize(-velocity_range, velocity_range)
+    if len(image.shape) == 3:
+        image = image[:, :, 0]
+
+    image = cm(norm(image))
+    image = image[:, :, 0:3]
+    image = (image * 255.0).astype(np.uint8)
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    
+    if resize != 1:
+        image = cv2.resize(image, (0,0), fx=resize, fy=resize) 
+    cv2.imwrite(os.path.join(output_path, filename), image)
+
+def to_tof_image(img, exposure_time = 0.0015):
+    img = np.asarray(img)
+    img = rgb2luminance(img)
+    img = img * exposure_time
+    return img
+
+def calc_velocity_from_homo_hetero(homodyne, heterodyne, **kwargs):
+    # homodyne_avg = np.mean(np.abs(homodyne))
+    # epsilon = 0.2 * homodyne_avg
+    # heterodyne_avg = np.mean(np.abs(heterodyne))
+    # r = np.mean(np.abs(homodyne) < epsilon)
+    
+    epsilon = 5e-3 * 0.0015
+    # epsilon2 = 5e-6
+
+    # homodyne = np.where((np.abs(homodyne) < epsilon) & (homodyne > 0), epsilon, homodyne)
+    # homodyne = np.where((np.abs(homodyne) < epsilon) & (homodyne < 0), -epsilon, homodyne)
+
+    ratio = np.divide(heterodyne, homodyne, out=np.zeros_like(homodyne), where=np.abs(homodyne) > 0)
+    
+    # ratio = np.where((np.abs(homodyne) < epsilon) & (np.abs(heterodyne) < epsilon2), 0, ratio)
+
+    T = kwargs.get("exposure_time", 0.0015)
+    ratio = np.clip(ratio, -1, 0.999)
+    delta_w = ratio * (1 / T) / (ratio - 1)
+    w_g = kwargs.get("w_g", 30) * 1e6
+    speed_of_light = 3e8
+
+    velocity_map = 0.5 * delta_w * speed_of_light / w_g 
+    # velocity_map = np.abs(heterodyne * homodyne) * 1e12
+    # velocity_map = np.clip(velocity_map, -5, 5)
+
+    # velocity_map = np.where(np.abs(homodyne) < epsilon, 0, 1)
+
+    return -velocity_map
+
+def calc_velocity_from_homo_heteros(homodynes, heterodynes, **kwargs):
+    ratio_sum = 0
+    ratio_confidence_sum = 0
+    
+    for i in range(len(homodynes)):
+        homodyne = homodynes[i]
+        heterodyne = heterodynes[i]
+        
+        ratio = np.divide(heterodyne, homodyne, out=np.zeros_like(homodyne), where=np.abs(homodyne) > 0)
+        ratio_confidence = np.abs(homodyne) + 1e-5 * 0.0015
+
+        ratio_sum += ratio * ratio_confidence
+        ratio_confidence_sum += ratio_confidence
+    
+    ratio = ratio_sum / ratio_confidence_sum
+
+
+    T = kwargs.get("exposure_time", 0.0015)
+    ratio = np.clip(ratio, -1, 0.999)
+    delta_w = ratio * (1 / T) / (ratio - 1)
+    w_g = kwargs.get("w_g", 30) * 1e6
+    speed_of_light = 3e8
+
+    velocity_map = 0.5 * delta_w * speed_of_light / w_g 
+    # velocity_map = np.abs(heterodyne * homodyne) * 1e12
+    # velocity_map = np.clip(velocity_map, -5, 5)
+
+    # velocity_map = np.where(np.abs(homodyne) < epsilon, 0, 1)
+
+    return -velocity_map
+
+
 def save_tof_image(image, output_path, filename, 
     vmin_percentile=5, vmax_percentaile=95, 
     vmin=None, vmax=None, colorbar_also=False, resize=1, **kwargs):

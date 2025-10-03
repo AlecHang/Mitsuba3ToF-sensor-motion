@@ -1,0 +1,60 @@
+<scene version="2.1.0">
+	<default name="spp" value="1024" />
+	<default name="resx" value="1280" />
+	<default name="resy" value="720" />
+	<integrator type="path">
+		<integer name="max_depth" value="12" />
+	</integrator>
+	<sensor type="perspective" id="Camera">
+		<string name="fov_axis" value="x" />
+		<float name="fov" value="39.597755" />
+		<transform name="to_world">
+			<rotate x="1" angle="-153.5592908827048" />
+			<rotate y="1" angle="-46.691938147394204" />
+			<rotate z="1" angle="-179.999991348578" />
+			<translate value="7.358891 6.350466 6.925791" />
+		</transform>
+		<sampler type="correlated">
+			<integer name="sample_count" value="1024" />
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="$resx" />
+			<integer name="height" value="$resy" />
+		</film>
+		<float name="shutter_open" value="0.0" />
+		<float name="shutter_close" value="0.0015" />
+	</sensor>
+	<bsdf type="twosided" id="mat-Material">
+		<bsdf type="diffuse" />
+	</bsdf>
+	<bsdf type="twosided" id="default-bsdf">
+		<bsdf type="diffuse" />
+	</bsdf>
+	<shape type="ply" id="mesh-Cube">
+		<string name="filename" value="meshes/Cube.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="mat-Material" name="bsdf" />
+		<animation name="to_world">
+			<transform time="0">
+				<matrix value="0.9397918645334564 0.33646705098501656 0.059391453957914814 -0.8412784168156681 -0.3352683832741368 0.8752558482694675 0.3475083870496245 -2.1335526451935074 0.06511828651267573 -0.34643958743477954 0.9354279119954982 0.9489668487233196 0.0 0.0 0.0 1.0" />
+			</transform>
+			<transform time="0.0015">
+				<matrix value="0.9396025477261334 0.3369922503507671 0.05943625459845476 -0.8418083915624749 -0.33565201497907576 0.8743863235787678 0.3493873831537699 -2.130744763664894 0.06593595578491766 -0.3481805982055063 0.9347468052425698 0.9537045151651502 0.0 0.0 0.0 1.0" />
+			</transform>
+		</animation>
+	</shape>
+	<shape type="ply" id="mesh-Plane">
+		<string name="filename" value="meshes/Plane.ply" />
+		<boolean name="face_normals" value="true" />
+		<ref id="default-bsdf" name="bsdf" />
+	</shape>
+	<emitter type="point">
+		<transform name="to_world">
+			<rotate x="1" angle="-153.5592908827048" />
+			<rotate y="1" angle="-46.691938147394204" />
+			<rotate z="1" angle="-179.999991348578" />
+			<translate value="7.358891 6.350466 6.925791" />
+		</transform>
+		<rgb name="intensity" value="100" />
+	</emitter>
+</scene>

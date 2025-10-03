@@ -130,7 +130,7 @@ The exact camera position and orientation is most easily expressed using the
 template <typename Float, typename Spectrum>
 class PerspectiveCamera final : public ProjectiveCamera<Float, Spectrum> {
 public:
-    MI_IMPORT_BASE(ProjectiveCamera, m_to_world, m_needs_sample_3,
+    MI_IMPORT_BASE(ProjectiveCamera, m_to_world, m_transform, m_needs_sample_3,
                    m_film, m_sampler, m_resolution, m_shutter_open,
                    m_shutter_open_time, m_near_clip, m_far_clip,
                    sample_wavelengths)
@@ -259,6 +259,28 @@ public:
 
         // Convert into a normalized ray direction; adjust the ray interval accordingly.
         Vector3f d = dr::normalize(Vector3f(near_p));
+
+        //process animation
+        if(m_transform){
+            auto new_m_to_world = m_transform->eval(time);
+
+            ray.o = new_m_to_world.translation();
+            ray.d = new_m_to_world * d;
+
+            Float inv_z = dr::rcp(d.z());
+            Float near_t = m_near_clip * inv_z,
+                  far_t  = m_far_clip * inv_z;
+            ray.o += ray.d * near_t;
+            ray.maxt = far_t - near_t;
+
+            ray.o_x = ray.o_y = ray.o;
+
+            ray.d_x = new_m_to_world * dr::normalize(Vector3f(near_p) + m_dx);
+            ray.d_y = new_m_to_world * dr::normalize(Vector3f(near_p) + m_dy);
+            ray.has_differentials = true;
+
+            return { ray, wav_weight };
+        }
 
         ray.o = m_to_world.value().translation();
         ray.d = m_to_world.value() * d;

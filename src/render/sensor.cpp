@@ -22,6 +22,7 @@ MI_VARIANT Sensor<Float, Spectrum>::Sensor(const Properties &props) : Base(props
     for (auto &[name, obj] : props.objects(false)) {
         auto *film = dynamic_cast<Film *>(obj.get());
         auto *sampler = dynamic_cast<Sampler *>(obj.get());
+        auto *animation_transform = dynamic_cast<AnimatedTransform *>(obj.get());
 
         if (film) {
             if (m_film)
@@ -32,6 +33,9 @@ MI_VARIANT Sensor<Float, Spectrum>::Sensor(const Properties &props) : Base(props
             if (m_sampler)
                 Throw("Only one sampler can be specified per sensor.");
             m_sampler = sampler;
+            props.mark_queried(name);
+        } else if(animation_transform){
+            m_transform = animation_transform;
             props.mark_queried(name);
         }
     }

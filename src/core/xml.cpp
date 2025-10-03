@@ -1165,7 +1165,22 @@ static Task *instantiate_node(XMLParseContext &ctx,
         try {
             /* Convenience hack (from Mitsuba 0.5): allow passing animated transforms to arbitrary shapes
                 and then internally rewrite this into a shape group + animated instance */
-            if((strcmp(string::to_lower(inst.class_->name()).c_str(), "shape") == 0)
+            if((strcmp(string::to_lower(inst.class_->name()).c_str(), "sensor") == 0)
+                       && (strcmp(props.plugin_name().c_str(), "instance") != 0)
+                       && props.has_property("to_world")
+                       && props.type("to_world") != Properties::Type::Transform
+            ){
+                // remove to_world animated transform
+                ref<AnimatedTransform> trafo = props.animated_transform("to_world");
+                props.remove_property("to_world");
+
+                auto temp_to_world = Transform4f();
+                props.set_transform("to_world", temp_to_world);
+                props.set_animated_transform("animation_transform", trafo);
+
+                inst.object = PluginManager::instance()->create_object(props, inst.class_);
+
+            }else if((strcmp(string::to_lower(inst.class_->name()).c_str(), "shape") == 0)
             && (strcmp(props.plugin_name().c_str(), "instance") != 0)
             && props.has_property("to_world")
             && props.type("to_world") != Properties::Type::Transform

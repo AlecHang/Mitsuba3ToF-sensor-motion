@@ -462,8 +462,39 @@ public:
         Value t0 = m_keyframes[0].time,
               t1 = m_keyframes[1].time,
               t  = dr::minimum(dr::maximum((time - t0) / (t1 - t0), 0.f), 1.f);
+        
+        auto result = Transform<Point<T, 4>>(m_keyframes[0].transform * t - m_keyframes[0].transform * t);
 
-        return Transform<Point<T, 4>>(m_keyframes[0].transform * (1-t) + m_keyframes[1].transform * t);
+        //两个关键帧之间插值
+        int i = 0;
+        for(i=0;i<size()-1;i++){
+            Value t_0 = m_keyframes[i].time,
+                  t_1 = m_keyframes[i+1].time,
+                  t_left = dr::select(time>=t_0&&time<t_1, dr::maximum((time - t_0) / (t_1 - t_0), 0.f), 1.1 ),
+                  t_right = dr::select(t_left<1, 1- t_left, 0);
+            t_left = dr::select(t_left<1.1, t_left, 0 );
+            //std::cout<<"t_0:"<<t_0<<"  t_1:"<<t_1<<std::endl;
+            //std::cout<<"t_left:\n"<<t_left<<std::endl;
+            //std::cout<<i<<" t_right:\n"<<t_right<<std::endl;
+
+            result = Transform<Point<T, 4>>(result.matrix + m_keyframes[i].transform * t_left + m_keyframes[i+1].transform * t_right);
+            //std::cout<<"result:\n"<<result.matrix<<std::endl;
+            //std::cout<<"result:\n"<<m_keyframes[0].transform * (1-t) + m_keyframes[1].transform * t<<std::endl;
+
+        }
+
+        //当t大于等于最后一个关键字的情况
+        {
+            Value t_2 = dr::select(time>=m_keyframes[size()-1].time, 1, 0);
+            result = Transform<Point<T, 4>>(result.matrix + m_keyframes[size()-1].transform * t_2);
+            //std::cout<<"t_2:\n"<<t_2<<std::endl;
+            //std::cout<<"result:\n"<<result.matrix<<std::endl;
+        }
+
+
+        return result.matrix;
+
+        //return Transform<Point<T, 4>>(m_keyframes[0].transform * (1-t) + m_keyframes[1].transform * t);
 
         // Default Mitsuba implementation --> seems inaccurate!
         // Interpolate the scale matrix

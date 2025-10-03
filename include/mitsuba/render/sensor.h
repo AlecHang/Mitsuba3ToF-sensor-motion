@@ -18,7 +18,7 @@ template <typename Float, typename Spectrum>
 class MI_EXPORT_LIB Sensor : public Endpoint<Float, Spectrum> {
 public:
     MI_IMPORT_TYPES(Film, Sampler, Texture)
-    MI_IMPORT_BASE(Endpoint, sample_ray, m_needs_sample_3)
+    MI_IMPORT_BASE(Endpoint, sample_ray, m_needs_sample_3, m_transform)
 
     // =============================================================
     //! @{ \name Sensor-specific sampling functions
