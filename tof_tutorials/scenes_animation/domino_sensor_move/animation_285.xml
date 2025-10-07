@@ -1,0 +1,681 @@
+
+<scene version="2.1.0">
+    <default name="spp" value="1024"/>
+    <default name="resx" value="1280"/>
+    <default name="resy" value="720"/>
+    <integrator name="temp0" type="path">
+        <integer name="max_depth" value="12"/>
+    </integrator>
+    <sensor name="temp44" type="perspective">
+        <string name="fov_axis" value="x"/>
+        <float name="fov" value="83.974423"/>
+        <float name="principal_point_offset_x" value="0.000000"/>
+        <float name="principal_point_offset_y" value="-0.000000"/>
+        <float name="near_clip" value="0.100000"/>
+        <float name="far_clip" value="1000.000000"/>
+        <sampler name="sampler" type="correlated">
+            <integer name="sample_count" value="1024"/>
+        </sampler>
+        <film name="film" type="hdrfilm">
+            <integer name="width" value="$resx"/>
+            <integer name="height" value="$resy"/>
+        </film>
+        <float name="shutter_open" value="0.0"/>
+        <float name="shutter_close" value="0.0015"/>
+        <animation name="to_world">
+            <transform time="0">
+                <rotate angle="-142.5518126578256" x="1"/>
+                <rotate angle="3.976628485794621e-06" y="1"/>
+                <rotate angle="-179.999991348578" z="1"/>
+                <translate value="-0.000000 3.030926 4.073377"/>
+            </transform>
+            <transform time="0.0015">
+                <rotate angle="-142.5518126578256" x="1"/>
+                <rotate angle="3.976628485794621e-06" y="1"/>
+                <rotate angle="-179.999991348578" z="1"/>
+                <translate value="-0.000000 3.030926 4.073377"/>
+                <translate x="0.15" y="0.0" z="0.0"/>
+            </transform>
+        </animation>
+    </sensor>
+    <bsdf id="mat-Material" name="mat-Material" type="twosided">
+        <bsdf name="bsdf" type="diffuse">
+            <texture name="reflectance" type="bitmap">
+                <string name="filename" value="textures/siggraph_2023_logo.jpg"/>
+            </texture>
+        </bsdf>
+    </bsdf>
+    <bsdf id="mat-Material.001" name="mat-Material.001" type="twosided">
+        <bsdf name="bsdf" type="principled">
+            <rgb name="base_color" value="0.433648 0.266232 0.084399"/>
+            <float name="spec_tint" value="0.000000"/>
+            <float name="spec_trans" value="0.000000"/>
+            <float name="metallic" value="0.000000"/>
+            <float name="anisotropic" value="0.000000"/>
+            <float name="roughness" value="0.500000"/>
+            <float name="sheen" value="0.000000"/>
+            <float name="sheen_tint" value="0.500000"/>
+            <float name="clearcoat" value="0.000000"/>
+            <float name="clearcoat_gloss" value="0.173205"/>
+            <float name="specular" value="0.500000"/>
+        </bsdf>
+    </bsdf>
+    <bsdf id="mat-Material.002" name="mat-Material.002" type="twosided">
+        <bsdf name="bsdf" type="principled">
+            <rgb name="base_color" value="0.433648 0.266232 0.084399"/>
+            <float name="spec_tint" value="0.000000"/>
+            <float name="spec_trans" value="0.000000"/>
+            <float name="metallic" value="0.000000"/>
+            <float name="anisotropic" value="0.000000"/>
+            <float name="roughness" value="0.500000"/>
+            <float name="sheen" value="0.000000"/>
+            <float name="sheen_tint" value="0.500000"/>
+            <float name="clearcoat" value="0.000000"/>
+            <float name="clearcoat_gloss" value="0.173205"/>
+            <float name="specular" value="0.500000"/>
+        </bsdf>
+    </bsdf>
+    <bsdf id="mat-Material.003" name="mat-Material.003" type="twosided">
+        <bsdf name="bsdf" type="principled">
+            <rgb name="base_color" value="0.433648 0.266232 0.084399"/>
+            <float name="spec_tint" value="0.000000"/>
+            <float name="spec_trans" value="0.000000"/>
+            <float name="metallic" value="0.000000"/>
+            <float name="anisotropic" value="0.000000"/>
+            <float name="roughness" value="0.500000"/>
+            <float name="sheen" value="0.000000"/>
+            <float name="sheen_tint" value="0.500000"/>
+            <float name="clearcoat" value="0.000000"/>
+            <float name="clearcoat_gloss" value="0.173205"/>
+            <float name="specular" value="0.500000"/>
+        </bsdf>
+    </bsdf>
+    <bsdf id="mat-Material.004" name="mat-Material.004" type="twosided">
+        <bsdf name="bsdf" type="principled">
+            <rgb name="base_color" value="0.433648 0.266232 0.084399"/>
+            <float name="spec_tint" value="0.000000"/>
+            <float name="spec_trans" value="0.000000"/>
+            <float name="metallic" value="0.000000"/>
+            <float name="anisotropic" value="0.000000"/>
+            <float name="roughness" value="0.500000"/>
+            <float name="sheen" value="0.000000"/>
+            <float name="sheen_tint" value="0.500000"/>
+            <float name="clearcoat" value="0.000000"/>
+            <float name="clearcoat_gloss" value="0.173205"/>
+            <float name="specular" value="0.500000"/>
+        </bsdf>
+    </bsdf>
+    <bsdf id="mat-Material.005" name="mat-Material.005" type="twosided">
+        <bsdf name="bsdf" type="principled">
+            <rgb name="base_color" value="0.433648 0.266232 0.084399"/>
+            <float name="spec_tint" value="0.000000"/>
+            <float name="spec_trans" value="0.000000"/>
+            <float name="metallic" value="0.000000"/>
+            <float name="anisotropic" value="0.000000"/>
+            <float name="roughness" value="0.500000"/>
+            <float name="sheen" value="0.000000"/>
+            <float name="sheen_tint" value="0.500000"/>
+            <float name="clearcoat" value="0.000000"/>
+            <float name="clearcoat_gloss" value="0.173205"/>
+            <float name="specular" value="0.500000"/>
+        </bsdf>
+    </bsdf>
+    <emitter name="temp45" type="point">
+        <point name="position" x="-6.815235034541981e-16" y="3.0693089962005615" z="4.109199523925781"/>
+        <rgb name="intensity" value="7.957747 7.957747 7.957747"/>
+    </emitter>
+    <shape name="temp2" type="ply">
+        <string name="filename" value="meshes/Cube.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9485002491015502 -0.31468755149419203 -0.035806351564298816 0.320944854531952 0.0522872353628461 0.2671777323991548 -0.9621031099696894 1.2257063617342918 0.3124145430981141 0.9106823202057474 0.2698905395061512 1.3717703666272838 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9484266876162832 -0.3149483666838112 -0.03546294459628796 0.3206370056444696 0.05234558829028048 0.26610363157550176 -0.9623982240030786 1.2260196405832118 0.312628125120706 0.91090731676598 0.2688840948684186 1.3726682970206485 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp4" type="ply">
+        <string name="filename" value="meshes/Plane.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material.001" name="bsdf"/>
+    </shape>
+    <shape name="temp5" type="ply">
+        <string name="filename" value="meshes/Cube_001.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9982882025151278 -0.021309230053626966 -0.05446445583449679 0.0400154351094999 -0.05447525118478371 7.548229851300417e-05 -0.9985152009289391 1.172709367629083 0.0212817050424891 0.9997726433650451 -0.0010854718048925324 1.0842985159650618 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9982894152424338 -0.02125267791950261 -0.05446450604566838 0.03998586850986399 -0.0544752368235393 7.563227869848382e-05 -0.9985152009289391 1.1727090217072358 0.021225245086637638 0.9997738448285047 -0.001082241013864024 1.0844665116123764 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp6" type="ply">
+        <string name="filename" value="meshes/Cube_002.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9997247472195481 -0.022643125173385507 0.0061625662320617305 -0.04138684169379703 0.010977001101011121 0.2191194414952975 -0.9756362698518888 0.6543975033439067 0.02074111921946999 0.9754352628054975 0.2193077186384953 0.5438579067214357 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9997243323391538 -0.022661655494504426 0.0061592897403567135 -0.04141388821243608 0.010977874902948912 0.21911972684286912 -0.9756361932585763 0.6543941218729488 0.02075991250347716 0.9754347672018204 0.2193081399017145 0.5438598145259824 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp7" type="ply">
+        <string name="filename" value="meshes/Cube_003.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9956956847810476 -0.048444536453194784 0.07901121506727102 -0.07940314331615994 0.087776759800506 0.21929214910423572 -0.9717025333541991 0.1390939629330583 0.0297471131701142 0.9744555434345037 0.22260104836601186 0.21739165528822552 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9956897168861476 -0.04849382874436506 0.07905610045051933 -0.07942805060397287 0.08783150965128675 0.2192907223663776 -0.9716979037139717 0.13894807187967545 0.02978505621612873 0.974453410836863 0.22260530184797073 0.21724836026580624 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp8" type="ply">
+        <string name="filename" value="meshes/Cube_004.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9767994262686006 -0.174349405431112 0.124343163754355 0.05237710631365666 0.16172346359305495 0.21997776493826954 -0.9620059514888415 -0.3756842765298932 0.14037244670911145 0.9597958379134919 0.24307101646682594 -0.3635243958277593 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9767763844497882 -0.174489704073852 0.12432749786882098 0.05245055073267646 0.16174015455044954 0.2199581210107066 -0.9620076450520864 -0.3757287328235625 0.14051359859335738 0.9597748573578302 0.24307235259461213 -0.3639053961190001 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp9" type="ply">
+        <string name="filename" value="meshes/Cube_005.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9719027191960669 -0.22016705498067468 0.08324173408267502 0.12852199276922094 0.13240288142234324 0.21898313180635892 -0.9667035994971398 -0.6340823881762923 0.1946077714364738 0.9505630726936338 0.24198123399308116 -0.8075446239377071 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9718783529513808 -0.22028148686604615 0.08322352955434723 0.12862034800749428 0.13241094605892761 0.21896944263206713 -0.9667055994336351 -0.6341047913549351 0.1947239554994622 0.9505397192476397 0.2419795234091001 -0.8078637075041692 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp10" type="ply">
+        <string name="filename" value="meshes/Cube_006.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9875429279094795 -0.14253839511245808 -0.06664768018170292 0.033569959827962625 -0.034096430667326205 0.2196498707821694 -0.9749827549606378 -0.5425286201210473 0.15361166220766026 0.96510962135734 0.21205357332817676 -1.0395735359819138 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9875486245364296 -0.14250354891755906 -0.0666377119875884 0.0335677611528188 -0.03409666619173457 0.21963405651938364 -0.9749863122944888 -0.5425297990872776 0.15357495167555507 0.9651183695131547 0.21204035927968226 -1.039527672777611 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp11" type="ply">
+        <string name="filename" value="meshes/Cube_007.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9204189249805417 -0.2506994866746068 -0.29995068793405133 0.17980286245099553 -0.2508558987424361 0.20969595743216324 -0.9450356035007311 -0.2902855838768535 0.29982086407211 0.9450792932337414 0.13011554767360992 -1.8151477038194246 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9204966512266881 -0.25063929335528545 -0.29976247263392625 0.17978093594536398 -0.250699128207045 0.20960777977612602 -0.9450967845367503 -0.29069927134611184 0.2997134020715612 0.9451148190064097 0.13010508587814762 -1.8149521599373954 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp12" type="ply">
+        <string name="filename" value="meshes/Cube_008.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.31613663884884946 0.8854073542570966 -0.3407057157081388 1.7535071476072015 -0.5941725750717608 -0.09512367992357479 -0.7986490952441515 0.4708734701737971 -0.7395417240664011 0.4549076702619608 0.4960299768190739 0.963681656053574 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.3165034792847267 0.8852546107056601 -0.3407622756142986 1.7526294919393943 -0.5945535150582631 -0.09471843230600022 -0.7984139537745161 0.4717936129362079 -0.739078845202058 0.45528970560549764 0.49636972773296406 0.9627481447112681 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp13" type="ply">
+        <string name="filename" value="meshes/Cube_009.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="-0.06962749566953355 0.9907456463290247 0.11650083140237746 2.611777207728484 -0.8583474284032502 -6.1718565859376796e-06 -0.5129359070796147 1.0400227911898845 -0.5081882161669565 -0.1357311601654489 0.8504045433291365 0.8866306696699411 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="-0.06972874722972094 0.9907447977954564 0.11644751649956078 2.6119105916686687 -0.857915681525405 -6.1959534374474265e-06 -0.5136583947764912 1.0378327193460843 -0.5089035816650042 -0.1357373386912894 0.8499760633178008 0.8874636810211849 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp14" type="ply">
+        <string name="filename" value="meshes/Cube_010.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.013038908155106048 0.9941781057646379 0.1069447747412535 1.9431452664749886 -0.9924651213505737 -0.00016244902726819535 0.12245617348769633 2.045846365644761 0.12175977391153259 -0.1077380726414878 0.9866852694032104 -0.37402032271397667 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.01309356497693687 0.9941667143892126 0.10704400563289115 1.9432750783245467 -0.992428053383052 -0.0001529038205946192 0.1227565052277463 2.046336666448178 0.12205595702490193 -0.10784320219602403 0.9866372368858517 -0.3746020434429518 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp15" type="ply">
+        <string name="filename" value="meshes/Cube_011.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.05301548064188416 0.9820271451307092 0.18106744075105632 1.6462473152512718 -0.9336962148975139 -0.015514615485698435 0.3576772456729017 2.071080584078535 0.35406802333930826 -0.1880368484615882 0.9160904136492773 -0.9035684386348316 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.05299679666290391 0.9819606891831052 0.18143335508948866 1.6468966552244066 -0.9338526726769155 -0.015582408286675543 0.3572658715013767 2.07083544925445 0.35365822363431265 -0.18837833741702537 0.9161787087179515 -0.9027957827735664 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp16" type="ply">
+        <string name="filename" value="meshes/Cube_012.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.09316023435048322 0.9904379848275948 0.10175241040498775 1.095671101240531 -0.738290454180385 0.00015044219822578394 0.674483157069095 1.846264095431056 0.6680185523033473 -0.13795778467032244 0.7312448672663858 -1.8354263750520072 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.09314963734780085 0.9904392088184942 0.10175018664581237 1.0956794668017142 -0.7382879648980202 0.00014354496445293592 0.6744858803868758 1.8462700245439565 0.6680227649350414 -0.13794899671603084 0.731242663081057 -1.8354394377417844 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp17" type="ply">
+        <string name="filename" value="meshes/Cube_013.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.8977181056935217 0.1719590111446468 0.4056225920180644 0.7011679594187692 -0.4289492568618169 0.13110381646270622 0.8937634656690153 1.4787095023279742 0.10051125655332102 -0.9763398919117356 0.19145748831852474 -1.3868267254069218 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.897763678709123 0.1718523039184053 0.4055669597420236 0.7010980006713847 -0.42887278961809727 0.13110141879218984 0.8938005198115703 1.4786915630667865 0.10043052242431717 -0.9763590101990349 0.19140238964256162 -1.3868013177976115 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp18" type="ply">
+        <string name="filename" value="meshes/Cube_014.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9396491657314278 0.2976204729435175 0.16876500223866378 0.11105512283693053 -0.21609342283259492 0.13382681890522566 0.9671578331247539 1.0251029887431367 0.26526072776657855 -0.9452577369045707 0.19006409150201337 -0.8643864190927002 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9396464530519277 0.2976317366634504 0.16876027472920369 0.11106306583748593 -0.2160897272056995 0.13382268512001028 0.9671592288251165 1.0251018880084097 0.2652733672573551 -0.9452547783008018 0.19006117755198793 -0.8643958811477261 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp19" type="ply">
+        <string name="filename" value="meshes/Cube_015.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9831043106092439 0.13068747223224583 0.12816840661509782 0.016118721436200856 -0.14949126992147538 0.16914700587998494 0.9741877574640644 0.6396203390918185 0.10563483663016132 -0.9768879465524183 0.18582579508023492 -0.2959284522255561 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9831020606809526 0.13070208953706008 0.12817074611527887 0.01605493027986539 -0.14949539159862169 0.16913820290740006 0.9741886595630792 0.6396252384233935 0.10564992551095706 -0.9768875185310608 0.18581948464231474 -0.29593435961315145 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp20" type="ply">
+        <string name="filename" value="meshes/Cube_016.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9851616146035562 0.025541067074378993 0.16971889285665318 0.0350139874300926 -0.17158894875599928 0.16817039441161563 0.9707089637799803 0.3267008147777697 -0.00374869908710044 -0.9854268568675262 0.17005767100483615 0.19706180651956273 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9851588380963031 0.02556621896098912 0.16973122948620017 0.034910445529541825 -0.17160546099568566 0.16814915779405415 0.9707097297131061 0.32669831019469475 -0.003722734595480732 -0.9854298304895885 0.17004101961868023 0.19717963415616213 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp21" type="ply">
+        <string name="filename" value="meshes/Cube_017.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9422425699478926 -0.14696982622861232 0.3009513493681862 0.21976876982157917 -0.2842295448622141 0.12443104523562701 0.9506471558568598 0.16223430062011487 -0.17716401431137163 -0.9812792669521488 0.07547078130075113 0.46028288713068005 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9422053264540503 -0.14716234197513184 0.3009739529057668 0.2198053596152413 -0.2842474022717937 0.12437569306313283 0.9506490536689383 0.16226924353927982 -0.17733346263419103 -0.9812574528812121 0.07535664790359486 0.4604886725410419 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp22" type="ply">
+        <string name="filename" value="meshes/Cube_018.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.19611982227801153 0.9567590624563278 0.21482016698020567 0.8538518176636203 -0.6142409849173887 -0.05090136476556194 0.7874750425629793 0.03208203653230621 0.7643590200469127 -0.28639093243336256 0.577697471657382 -0.15466617382991996 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.19615355843682958 0.9567370456384323 0.21488743633353852 0.8538444213553222 -0.6142705052531249 -0.05092468442039632 0.7874505071718478 0.03212016885039284 0.7643266434192323 -0.28646034698473566 0.5777058969217662 -0.15463002266552242 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp23" type="ply">
+        <string name="filename" value="meshes/Cube_019.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="-0.08117501467128346 0.9836968606011811 -0.160471213904206 0.5080204869062579 -0.9135318433337412 -0.00904504998717208 0.4066668683906821 -0.04637276126975853 0.39858552870695907 0.17960669387993483 0.8993726540718385 -0.054613520803246496 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="-0.08117781990102531 0.9836942924730363 -0.16048556663994756 0.5080429665566375 -0.9135282530226381 -0.009040121884427044 0.4066750043025522 -0.04638210389091828 0.3985931529320481 0.17962103334632407 0.8993664074616788 -0.05460249118933797 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp24" type="ply">
+        <string name="filename" value="meshes/Cube_020.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.09895782772481586 0.9408131507298314 -0.32415686052342596 0.14135694700447227 -0.961274416794603 0.006178703413703039 -0.2755230136252179 0.14093666062265092 -0.2572127242097585 0.33886894173174076 0.9049912980769839 0.11852140312828091 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.09896393626530359 0.940803549952767 -0.32418285118749135 0.14137564258823465 -0.9612751282266963 0.00617831639576081 -0.27552056263921576 0.14093566828687476 -0.2572077363000399 0.3388955940900768 0.9049827366467144 0.11853164303163291 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp25" type="ply">
+        <string name="filename" value="meshes/Cube_021.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.18871634248005859 0.9411675076081039 -0.2803381493366038 -0.17449409880464406 -0.7959319766606918 -0.020622169774916932 -0.6050345822729033 0.09247370308350877 -0.5752202465484808 0.33731026671644876 0.7452135855450874 0.312774342633599 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.18873580196623713 0.9411716451478926 -0.2803111714698378 -0.1745019159170116 -0.7959084082629175 -0.0206024451240278 -0.6050662663732091 0.09249487920623198 -0.5752464797549404 0.33729993413069703 0.7451980115715285 0.3128019626523312 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp26" type="ply">
+        <string name="filename" value="meshes/Cube_022.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.6374841098032542 0.4012664181735128 -0.6577230827274916 -0.08645679753186292 -0.7116729340971266 -0.020392499942639385 -0.7022151660842673 -0.19539425764449186 -0.2951879741572655 0.9157343306432941 0.27257067156603865 0.6918849249549633 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.6374855140138189 0.4012688586461649 -0.6577202317541897 -0.08645916153417374 -0.7116706043841441 -0.020392487252181592 -0.7022175319665893 -0.19539148952689306 -0.29519057673389176 0.9157332643444739 0.2725714545199006 0.6919111205559496 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp27" type="ply">
+        <string name="filename" value="meshes/Cube_023.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.856087563184032 0.2855440811141727 -0.4307886479179954 -0.06654102685190505 -0.4803836961705734 0.13216067022232975 -0.8670440560521696 -0.2871126266234764 -0.19064599301097288 0.9492091535032738 0.2503118054409695 0.20744059283038724 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.8560812123226142 0.2855561257853542 -0.4307932605374866 -0.06654386387001662 -0.48039012681668236 0.13215342314492495 -0.8670415965557988 -0.28711564015221924 -0.19065824953523175 0.9492065403202494 0.25031239265636596 0.207461442637695 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp28" type="ply">
+        <string name="filename" value="meshes/Cube_024.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.8528093513253798 0.4500812434947844 -0.2648437355946595 -0.19545065357779895 -0.3754425098443869 0.17590929096017505 -0.9099992151675027 -0.5104436614107892 -0.36298526045738944 0.8754891817872734 0.31899741430787465 -0.3526975864920557 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.8527682462524846 0.4501487357046222 -0.26486141162913046 -0.19549533876067862 -0.3754703914025662 0.17586775036106259 -0.9099957514477002 -0.5104682140725377 -0.3630530056386694 0.875462832191777 0.31899263999139016 -0.35277123727108967 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp29" type="ply">
+        <string name="filename" value="meshes/Cube_025.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9022646522240956 0.3567760620579321 -0.24213477276026063 -0.26065062822192714 -0.3212518638292139 0.18166160155019678 -0.9294064444203847 -0.7933219786137835 -0.287603363846057 0.9163567455044919 0.2785218058144741 -0.6952926346291002 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9022700935400341 0.35675116923688044 -0.24215119777062605 -0.2606397686847658 -0.3212602284562371 0.18165918660864316 -0.9294040274758542 -0.7933288224468761 -0.28757696628313356 0.916366912889018 0.27851560175615475 -0.6952683817403837 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp30" type="ply">
+        <string name="filename" value="meshes/Cube_026.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9233478627796188 0.23201848889185545 -0.30593527212175686 -0.33396330629254656 -0.35078852608119826 0.18575231059002179 -0.9178473037457786 -1.148752585104468 -0.15612931650435175 0.9548107829620189 0.2529034074495733 -0.8897697487795371 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9233472404590275 0.2320136530014309 -0.3059408038609991 -0.33396074594889624 -0.35079228553584657 0.18574941956857233 -0.9178464441986041 -1.1487564487468331 -0.15612453580565633 0.9548125175748887 0.25289980756388186 -0.8897797912488792 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp31" type="ply">
+        <string name="filename" value="meshes/Cube_027.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.8722084669705529 0.1725480004088248 -0.4576898455440189 -0.6027025924485445 -0.4848790483434304 0.18184179732720374 -0.8554683677044264 -1.5850319821522563 -0.0643822237233324 0.9680705765055078 0.24226880891267133 -1.0299751952934288 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.8722017810134322 0.17255090494673814 -0.457701513258636 -0.6027292774383733 -0.48489093626241603 0.18183766279107372 -0.8554625125711977 -1.5850419808924945 -0.06438346676882097 0.9680708318164928 0.2422674472537809 -1.029987410871331 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp32" type="ply">
+        <string name="filename" value="meshes/Cube_028.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="-0.10547509250443685 0.9846456052379632 0.13909686818738207 -1.4866209399154364 -0.7969150856253335 -2.789572048066113e-05 -0.6040913649040873 -2.122142466826271 -0.594812172112328 -0.17456496663697818 0.7846819135350984 -1.3613791969040763 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="-0.10547474464318332 0.9846458230032153 0.1390955635479577 -1.4866259250341485 -0.796914239907607 -2.8165396463294207e-05 -0.6040924797623038 -2.122142352228083 -0.5948133688826956 -0.17456371561315098 0.7846812837678616 -1.361390898631569 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp33" type="ply">
+        <string name="filename" value="meshes/Cube_029.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.0021330494816737496 0.9762869115582691 0.21647005273034242 -1.5696572295598534 -0.9986414657454342 -0.009191900472025748 0.0512961910565973 -1.8211510345163266 0.05206955961328093 -0.21628530546093952 0.9749407947894687 -0.12219923796189391 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.00213617640329043 0.9762867163204569 0.21647089951196488 -1.5696584954459034 -0.9986421997645931 -0.009185835709756552 0.05128306211178345 -1.82117986476154 0.05205542655308551 -0.21628643934207942 0.9749412969011846 -0.12225636973097717 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp34" type="ply">
+        <string name="filename" value="meshes/Cube_030.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="-0.04164853036299332 0.9785147982241923 -0.20192537835117777 -3.2267225395576666 -0.9757148049138737 0.0036640002659374766 0.21900257740203272 -1.9220360869631703 0.21503703257267964 0.20614386021554215 0.9545991806074212 0.24140473452922684 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="-0.04168738261806922 0.9785134345823403 -0.20192397169079612 -3.2268107063574916 -0.9756805606688164 0.0036579019987659205 0.21915520204067823 -1.9217160771128112 0.2151848415960178 0.20615044030322457 0.9545644598684995 0.24169218130956682 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp35" type="ply">
+        <string name="filename" value="meshes/Cube_031.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.14287777890065545 0.9761390254535139 0.16351469740688507 -1.8721544756022002 -0.7514270150187845 -0.000534307907630631 0.6597819678587453 -1.0710262838651068 0.644126300691279 -0.217145923328668 0.7334204134932564 0.6346103604759255 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.14281247034384414 0.976138229483972 0.16357650991221462 -1.8722431151232264 -0.7517468080179674 -0.0005185480861578727 0.6594177751677726 -1.072447282850461 0.6437677323321831 -0.21714953522819316 0.7337342673571248 0.6340882637998597 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp36" type="ply">
+        <string name="filename" value="meshes/Cube_032.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.7202312566596989 0.6132355977915118 0.3240763679843185 -0.6582575074356027 -0.40900448914679616 -0.0017910540378746954 0.912364586844789 -0.16252906012873625 0.5600707058350044 -0.7898978563815253 0.24952437259497298 -0.11813769295903542 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.7206318236802314 0.6132352148250342 0.3231868558037987 -0.6580822496212484 -0.40786066390018005 -0.0018148435400132071 0.9128773109896 -0.15849313815187224 0.5603908977576433 -0.7898980966742173 0.24880493160986372 -0.11800660313677089 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp37" type="ply">
+        <string name="filename" value="meshes/Cube_033.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9765602976453255 0.17012663138814782 0.13186097259658047 -0.1461331391337657 -0.15007114021137286 0.09899033838593477 0.9837071610291896 0.3005428267908687 0.1543018330682751 -0.9804375259426436 0.12220112656558718 -0.3895409987519593 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9765601859467579 0.17012709244975044 0.13186121514207033 -0.14613995145221176 -0.1500708051156699 0.09898629020499089 0.9837076205890651 0.3005437658655506 0.15430287346064808 -0.980437856345095 0.1221971752016946 -0.38956861409480326 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp38" type="ply">
+        <string name="filename" value="meshes/Cube_034.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9999153409322604 -0.0017286248260930327 0.012910979192010216 -0.033449232536850504 -0.01240068294602918 0.17713071755005494 0.9841092694864216 0.3692885000684679 -0.003988089222679056 -0.9841857816583686 0.17709427351223417 -0.3823035343957723 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9999153409322604 -0.0017257643668703443 0.012910505164508996 -0.03344683284092536 -0.0124007234766523 0.17713051029760818 0.9841093035278938 0.36928781989038 -0.003985187613030265 -0.9841858267132484 0.17709410415590968 -0.38232362865073166 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp39" type="ply">
+        <string name="filename" value="meshes/Cube_035.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.998672492628899 -0.05135222965940307 0.004084982230163004 0.008258575554474179 0.006404895067080122 0.2024584135512898 0.9792700206751357 0.0910452745973997 -0.05111472943671136 -0.9779434862324086 0.20251853221193694 -0.16211456116174014 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9986724607150225 -0.05135286042771932 0.00408516775618682 0.008257445043090365 0.006404191525673307 0.20244598290997184 0.9792725908062911 0.09104292201958791 -0.05111546505156403 -0.9779460243239668 0.20250607984138425 -0.162118219024009 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp40" type="ply">
+        <string name="filename" value="meshes/Cube_036.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9986288333714521 -0.052181413907968544 0.004244348142240016 0.002838606259813581 0.006607201428300419 0.20603761187927988 0.9785218294540071 -0.23949460983456367 -0.05193514672169949 -0.9771518053994073 0.20609985055087204 0.17621274765207232 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9986287535867608 -0.05218298031595387 0.004244755788870329 0.002837490079109468 0.006607057177578767 0.20603632781520753 0.9785221017857852 -0.23949609486221823 -0.05193677113801189 -0.9771519931280728 0.20609855357077894 0.17620931252745958 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp41" type="ply">
+        <string name="filename" value="meshes/Cube_037.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9986778115232072 -0.0512462272356562 0.004084107567440042 -0.00706190065407486 0.006579884473615625 0.20620904712539867 0.9784858973637666 -0.5707133096132466 -0.0509859013841536 -0.9771650504877738 0.20627361293857832 0.5194600027344176 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9986775562121954 -0.05125113971937626 0.004085903255101753 -0.007065483336970713 0.006578589089369646 0.20619847124329632 0.9784881270801996 -0.570718194344916 -0.05099115121683316 -0.9771670178841888 0.20626296391501864 0.5194748974276306 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp42" type="ply">
+        <string name="filename" value="meshes/Cube_038.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9988828105746711 -0.047059465232164505 0.004348622122536938 0.010203695414812364 0.005458876525414564 0.20628795447861284 0.9784762051552148 -0.9048578889867254 -0.04694363035812115 -0.9773590336717263 0.2063143793133283 0.8695765278587793 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9988827307899799 -0.04706107669502957 0.004350045907114209 0.010209269149461868 0.005457337159582959 0.20627800485933878 0.9784783157264949 -0.9048611919762599 -0.04694555795626003 -0.9773610611413142 0.2063043592059686 0.8696169812772295 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp43" type="ply">
+        <string name="filename" value="meshes/Cube_039.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material" name="bsdf"/>
+        <animation name="to_world">
+            <transform time="0">
+                <matrix value="0.9999173645769874 -0.012453512971846326 -0.0032142038565204714 0.02289811994657498 0.008290430481653843 0.4330208587348465 0.9013457580931379 -1.3192403426777395 -0.009833100261211473 -0.9012978993852729 0.43308825364966497 1.4775093922292788 0.0 0.0 0.0 1.0"/>
+            </transform>
+            <transform time="0.0015">
+                <matrix value="0.9999173573347944 -0.012454107156259886 -0.0032139285869433763 0.02289925556407303 0.008290439853089283 0.4330208706345009 0.9013457522902446 -1.3192403152340124 -0.00983375503041481 -0.9012978865001955 0.43308826827116476 1.477543553409504 0.0 0.0 0.0 1.0"/>
+            </transform>
+        </animation>
+    </shape>
+    <shape name="temp47" type="ply">
+        <string name="filename" value="meshes/Plane_001.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material.002" name="bsdf"/>
+    </shape>
+    <shape name="temp49" type="ply">
+        <string name="filename" value="meshes/Plane_002.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material.003" name="bsdf"/>
+    </shape>
+    <shape name="temp51" type="ply">
+        <string name="filename" value="meshes/Plane_003.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material.004" name="bsdf"/>
+    </shape>
+    <shape name="temp53" type="ply">
+        <string name="filename" value="meshes/Plane_004.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="mat-Material.005" name="bsdf"/>
+    </shape>
+    <emitter type="point">
+        <transform name="to_world">
+            <rotate angle="-142.5518126578256" x="1"/>
+            <rotate angle="3.976628485794621e-06" y="1"/>
+            <rotate angle="-179.999991348578" z="1"/>
+            <translate value="-0.000000 3.030926 4.073377"/>
+        </transform>
+        <rgb name="intensity" value="100"/>
+    </emitter>
+</scene>
