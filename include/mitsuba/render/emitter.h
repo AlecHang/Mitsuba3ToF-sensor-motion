@@ -1,5 +1,6 @@
 #pragma once
 
+#include <mitsuba/core/properties.h>
 #include <mitsuba/core/fwd.h>
 #include <mitsuba/core/transform.h>
 #include <mitsuba/render/endpoint.h>
@@ -52,7 +53,7 @@ MI_DECLARE_ENUM_OPERATORS(EmitterFlags)
 template <typename Float, typename Spectrum>
 class MI_EXPORT_LIB Emitter : public Endpoint<Float, Spectrum> {
 public:
-    MI_IMPORT_BASE(Endpoint, m_shape)
+    MI_IMPORT_BASE(Endpoint, m_shape, m_transform)
 
     /// Is this an environment map light emitter?
     bool is_environment() const {

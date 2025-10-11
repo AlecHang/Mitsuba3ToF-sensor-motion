@@ -5,7 +5,15 @@
 NAMESPACE_BEGIN(mitsuba)
 
 MI_VARIANT Emitter<Float, Spectrum>::Emitter(const Properties &props)
-    : Base(props) {}
+    : Base(props) {
+        for (auto &[name, obj] : props.objects(false)) {
+            auto *animation_transform = dynamic_cast<AnimatedTransform *>(obj.get());
+            if(animation_transform){
+                m_transform = animation_transform;
+                props.mark_queried(name);
+            }
+        }
+    }
 MI_VARIANT Emitter<Float, Spectrum>::~Emitter() { }
 
 MI_IMPLEMENT_CLASS_VARIANT(Emitter, Endpoint, "emitter")

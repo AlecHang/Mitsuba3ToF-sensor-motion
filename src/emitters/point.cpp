@@ -59,7 +59,7 @@ uniformly radiates illumination into all directions.
 template <typename Float, typename Spectrum>
 class PointLight final : public Emitter<Float, Spectrum> {
 public:
-    MI_IMPORT_BASE(Emitter, m_flags, m_medium, m_needs_sample_3, m_to_world)
+    MI_IMPORT_BASE(Emitter, m_flags, m_medium, m_needs_sample_3, m_to_world, m_transform)
     MI_IMPORT_TYPES(Scene, Shape, Texture)
 
     PointLight(const Properties &props) : Base(props) {
@@ -107,12 +107,20 @@ public:
             dr::zeros<SurfaceInteraction3f>(), wavelength_sample, active);
 
         weight *= 4.f * dr::Pi<Float>;
-
-        Ray3f ray(m_position.value(),
+        if(m_transform){
+            auto new_m_to_world = m_transform->eval(time);
+            Point3f light_pos = new_m_to_world * Point3f(0.f);
+            Ray3f ray(light_pos,
                   warp::square_to_uniform_sphere(dir_sample), time,
                   wavelengths);
-
-        return { ray, depolarizer<Spectrum>(weight) };
+            return { ray, depolarizer<Spectrum>(weight) };
+        }
+        else{
+            Ray3f ray(m_position.value(),
+                  warp::square_to_uniform_sphere(dir_sample), time,
+                  wavelengths);
+            return { ray, depolarizer<Spectrum>(weight) };
+        }
     }
 
     std::pair<DirectionSample3f, Spectrum> sample_direction(const Interaction3f &it,
