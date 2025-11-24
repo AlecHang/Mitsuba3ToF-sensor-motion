@@ -1,47 +1,45 @@
-#include <tuple>  // 用于处理元组数据结构
-#include <mitsuba/core/ray.h>  // 光线类定义
-#include <mitsuba/core/properties.h>  // 属性类定义
-#include <mitsuba/render/bsdf.h>  // 双向散射分布函数相关
-#include <mitsuba/render/emitter.h>  // 光源发射器相关
-#include <mitsuba/render/integrator.h>  // 积分器基类
-#include <mitsuba/render/records.h>  // 渲染记录相关
-#include <mitsuba/render/waveform_utils.h>  // 波形处理工具
+#include <tuple>
+#include <mitsuba/core/ray.h>
+#include <mitsuba/core/properties.h>
+#include <mitsuba/render/bsdf.h>
+#include <mitsuba/render/emitter.h>
+#include <mitsuba/render/integrator.h>
+#include <mitsuba/render/records.h>
+#include <mitsuba/render/waveform_utils.h>
 
-NAMESPACE_BEGIN(mitsuba)  // Mitsuba渲染框架命名空间开始
+// version 1: 考虑了传感器运动的物理效应建模，但未考虑运动补偿
+
+NAMESPACE_BEGIN(mitsuba)
 
 template <typename Float, typename Spectrum>
-/**
- * @brief DopplerToFPathIntegrator类，继承自MonteCarloIntegrator，用于实现多普勒飞行时间路径积分器
- * 该类用于模拟具有多普勒效应的飞行时间成像系统，包含光源和传感器的调制特性
- */
 class DopplerToFPathIntegrator : public MonteCarloIntegrator<Float, Spectrum> {
 public:
-    // 导入基类成员变量
     MI_IMPORT_BASE(MonteCarloIntegrator, m_max_depth, m_rr_depth, m_hide_emitters, 
     m_spatial_correlation_method, m_time_sampling_method, m_time_intervals, m_path_correlation_depth, m_is_doppler_integrator)
-    // 导入类型定义
     MI_IMPORT_TYPES(Scene, Sampler, Medium, Emitter, EmitterPtr, BSDF, BSDFPtr)
 
-    /**
-     * @brief 构造函数，初始化多普勒飞行时间积分器的参数
-     * @param props 属性对象，包含积分器的配置参数
-     */
     DopplerToFPathIntegrator(const Properties &props) : Base(props) {
-        // 标记为多普勒积分器
         m_is_doppler_integrator = true;
-        // 设置时间参数，默认值为0.0015秒
         m_time = props.get<ScalarFloat>("time", 0.0015f);
 
+        // 读取相机速度参数（单位：米/秒），默认为0
+        if (props.has_property("sensor_velocity")) {
+            auto v = props.get<ScalarVector3f>("sensor_velocity");
+            if (v.size() == 3)
+                m_sensor_velocity = Vector3f(v[0], v[1], v[2]);
+            else
+                m_sensor_velocity = Vector3f(0.f);
+            
+            std::cout << "m_sensor_velocity: " << m_sensor_velocity << std::endl;
+        } else {
+            m_sensor_velocity = Vector3f(0.f);
+        }
 
-
-        // 光源调制参数
-        m_illumination_modulation_frequency_mhz = props.get<ScalarFloat>("w_g", 30.0f); // 光源调制频率(MHz)
-        m_illumination_modulation_scale = props.get<ScalarFloat>("g_1", 0.5f);        // 光源调制幅度
-        m_illumination_modulation_offset = props.get<ScalarFloat>("g_0", 0.5f);       // 光源调制偏移
-
-        // 传感器调制参数
-        m_sensor_modulation_frequency_mhz = props.get<ScalarFloat>("w_s", 30.0f);    // 传感器调制频率(MHz)
-        m_sensor_modulation_phase_offset = props.get<ScalarFloat>("sensor_phase_offset", 0.0f); // 传感器调制相位偏移
+        m_illumination_modulation_frequency_mhz = props.get<ScalarFloat>("w_g", 30.0f);
+        m_illumination_modulation_scale = props.get<ScalarFloat>("g_1", 0.5f);
+        m_illumination_modulation_offset = props.get<ScalarFloat>("g_0", 0.5f);
+        m_sensor_modulation_frequency_mhz = props.get<ScalarFloat>("w_s", 30.0f);
+        m_sensor_modulation_phase_offset = props.get<ScalarFloat>("sensor_phase_offset", 0.0f);
         
         // syntactic sugar
         if(props.has_property("hetero_offset")){
@@ -74,18 +72,25 @@ public:
     }
     
 
-    Float eval_modulation_weight(Float ray_time, Float path_length) const
-    {
+
+    // 修正：考虑相机运动对ToF的影响
+    Float eval_modulation_weight(Float ray_time, Float path_length, const Vector3f &sensor_dir = Vector3f(0.f)) const {
         Float w_g = 2 * M_PI * m_illumination_modulation_frequency_mhz * 1e6;
         Float w_d = 2 * M_PI / m_time * m_hetero_frequency;
-        Float phi = (2 * M_PI * m_illumination_modulation_frequency_mhz) / 300 * path_length;
-        
+        // 光速单位：米/微秒 = 3e8 m/s / 1e6 = 300 m/us
+        Float tof = path_length / 300.0f; // 飞行时间，单位：微秒
+        // 计算回波到达时相机的位移
+        Vector3f sensor_offset = m_sensor_velocity * tof; // 单位：米
+        // 如果有sensor_dir（如主循环中可传入），可用sensor_dir投影
+        Float offset_proj = dr::dot(sensor_offset, sensor_dir);
+        // 修正后的路径长度
+        Float path_length_corr = path_length + offset_proj;
+        Float phi = (2 * M_PI * m_illumination_modulation_frequency_mhz) / 300 * path_length_corr;
         if(m_low_frequency_component_only){
             Float t = w_d * ray_time + m_sensor_modulation_phase_offset + phi;
             Float sg_t = 0.5 * m_illumination_modulation_scale * eval_modulation_function_value_low_pass<Float>(t, m_wave_function_type);
             return sg_t;
         }
-        
         Float t1 = w_g * ray_time - phi;
         Float t2 = (w_g + w_d) * ray_time  + m_sensor_modulation_phase_offset;
         Float g_t = m_illumination_modulation_scale * eval_modulation_function_value<Float>(t1, m_wave_function_type) + m_illumination_modulation_offset;
@@ -108,6 +113,8 @@ public:
 
         Ray3f ray                     = Ray3f(ray_);
         ray.time = dr::select(ray.time < m_time, ray.time, ray.time - m_time);
+        // 计算相机朝向（假设为射线方向的反方向）
+        Vector3f sensor_dir = -ray.d;
 
         Spectrum throughput           = 1.f;
         Spectrum result               = 0.f;
@@ -174,7 +181,7 @@ public:
 
                 // Compute MIS weight for emitter sample from previous bounce
                 Float mis_bsdf = mis_weight(prev_bsdf_pdf, em_pdf);
-                Float length_weight = eval_modulation_weight(ray.time, path_length);
+                Float length_weight = eval_modulation_weight(ray.time, path_length, sensor_dir);
 
 
                 // Accumulate, being careful with polarization (see spec_fma)
@@ -235,7 +242,7 @@ public:
                 Float mis_em =
                     dr::select(ds.delta, 1.f, mis_weight(ds.pdf, bsdf_pdf));
                 Float em_path_length = path_length + ds.dist;
-                Float length_weight = eval_modulation_weight(ray.time, em_path_length);
+                Float length_weight = eval_modulation_weight(ray.time, em_path_length, sensor_dir);
 
                 // Accumulate, being careful with polarization (see spec_fma)
                 result[active_em] = spec_fma(
@@ -341,6 +348,7 @@ private:
     ScalarFloat m_hetero_frequency;
     EWaveformType m_wave_function_type;
     bool m_low_frequency_component_only;
+    Vector3f m_sensor_velocity; // 新增：相机速度
 };
 
 MI_IMPLEMENT_CLASS_VARIANT(DopplerToFPathIntegrator, MonteCarloIntegrator)

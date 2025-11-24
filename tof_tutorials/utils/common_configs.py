@@ -24,6 +24,12 @@ def get_animation_scene_configs():
             "animation_length": 80,
             "intervals": 1,
             "w_g": 150
+        }, "domino_sensor_move" : {
+            "max_depth": 4,
+            "total_spp": 1024 * 4,
+            "animation_length": 150,
+            "intervals": 1,
+            "w_g": 150,
         }
     }
 

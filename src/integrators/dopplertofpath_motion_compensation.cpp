@@ -1,47 +1,74 @@
-#include <tuple>  // 用于处理元组数据结构
-#include <mitsuba/core/ray.h>  // 光线类定义
-#include <mitsuba/core/properties.h>  // 属性类定义
-#include <mitsuba/render/bsdf.h>  // 双向散射分布函数相关
-#include <mitsuba/render/emitter.h>  // 光源发射器相关
-#include <mitsuba/render/integrator.h>  // 积分器基类
-#include <mitsuba/render/records.h>  // 渲染记录相关
-#include <mitsuba/render/waveform_utils.h>  // 波形处理工具
+#include <tuple>
+#include <mitsuba/core/ray.h>
+#include <mitsuba/core/properties.h>
+#include <mitsuba/render/bsdf.h>
+#include <mitsuba/render/emitter.h>
+#include <mitsuba/render/integrator.h>
+#include <mitsuba/render/records.h>
+#include <mitsuba/render/waveform_utils.h>
 
-NAMESPACE_BEGIN(mitsuba)  // Mitsuba渲染框架命名空间开始
+
+// version 1: 考虑了传感器运动的物理效应建模，使用一个开关来指示是否采用运动补偿
+
+NAMESPACE_BEGIN(mitsuba)
 
 template <typename Float, typename Spectrum>
-/**
- * @brief DopplerToFPathIntegrator类，继承自MonteCarloIntegrator，用于实现多普勒飞行时间路径积分器
- * 该类用于模拟具有多普勒效应的飞行时间成像系统，包含光源和传感器的调制特性
- */
-class DopplerToFPathIntegrator : public MonteCarloIntegrator<Float, Spectrum> {
+class KalmanFilter {
 public:
-    // 导入基类成员变量
+    KalmanFilter() : estimate(0.f), uncertainty(1.f), process_noise(0.001f), measurement_noise(0.1f) {}
+
+    KalmanFilter(Float initial_estimate, Float initial_uncertainty, Float process_noise, Float measurement_noise)
+        : estimate(initial_estimate), uncertainty(initial_uncertainty),
+          process_noise(process_noise), measurement_noise(measurement_noise) {}
+
+    Float estimate_delay(Float measurement) const {
+        // Predict
+        uncertainty += process_noise;
+
+        // Update
+        Float kalman_gain = uncertainty / (uncertainty + measurement_noise);
+        estimate = estimate + kalman_gain * (measurement - estimate);
+        uncertainty = (1 - kalman_gain) * uncertainty;
+
+        return estimate;
+    }
+
+private:
+    mutable Float estimate;
+    mutable Float uncertainty;
+    Float process_noise;
+    Float measurement_noise;
+};
+
+template <typename Float, typename Spectrum>
+class DopplerToFPathMotionCompensationIntegrator : public MonteCarloIntegrator<Float, Spectrum> {
+public:
     MI_IMPORT_BASE(MonteCarloIntegrator, m_max_depth, m_rr_depth, m_hide_emitters, 
     m_spatial_correlation_method, m_time_sampling_method, m_time_intervals, m_path_correlation_depth, m_is_doppler_integrator)
-    // 导入类型定义
     MI_IMPORT_TYPES(Scene, Sampler, Medium, Emitter, EmitterPtr, BSDF, BSDFPtr)
 
-    /**
-     * @brief 构造函数，初始化多普勒飞行时间积分器的参数
-     * @param props 属性对象，包含积分器的配置参数
-     */
-    DopplerToFPathIntegrator(const Properties &props) : Base(props) {
-        // 标记为多普勒积分器
+    DopplerToFPathMotionCompensationIntegrator(const Properties &props) : Base(props)  {
         m_is_doppler_integrator = true;
-        // 设置时间参数，默认值为0.0015秒
         m_time = props.get<ScalarFloat>("time", 0.0015f);
 
+        // 读取相机速度参数（单位：米/秒），默认为0
+        if (props.has_property("sensor_velocity")) {
+            auto v = props.get<ScalarVector3f>("sensor_velocity");
+            if (v.size() == 3)
+                m_sensor_velocity = Vector3f(v[0], v[1], v[2]);
+            else
+                m_sensor_velocity = Vector3f(0.f);
+            
+            std::cout << "m_sensor_velocity: " << m_sensor_velocity << std::endl;
+        } else {
+            m_sensor_velocity = Vector3f(0.f);
+        }
 
-
-        // 光源调制参数
-        m_illumination_modulation_frequency_mhz = props.get<ScalarFloat>("w_g", 30.0f); // 光源调制频率(MHz)
-        m_illumination_modulation_scale = props.get<ScalarFloat>("g_1", 0.5f);        // 光源调制幅度
-        m_illumination_modulation_offset = props.get<ScalarFloat>("g_0", 0.5f);       // 光源调制偏移
-
-        // 传感器调制参数
-        m_sensor_modulation_frequency_mhz = props.get<ScalarFloat>("w_s", 30.0f);    // 传感器调制频率(MHz)
-        m_sensor_modulation_phase_offset = props.get<ScalarFloat>("sensor_phase_offset", 0.0f); // 传感器调制相位偏移
+        m_illumination_modulation_frequency_mhz = props.get<ScalarFloat>("w_g", 30.0f);
+        m_illumination_modulation_scale = props.get<ScalarFloat>("g_1", 0.5f);
+        m_illumination_modulation_offset = props.get<ScalarFloat>("g_0", 0.5f);
+        m_sensor_modulation_frequency_mhz = props.get<ScalarFloat>("w_s", 30.0f);
+        m_sensor_modulation_phase_offset = props.get<ScalarFloat>("sensor_phase_offset", 0.0f);
         
         // syntactic sugar
         if(props.has_property("hetero_offset")){
@@ -71,27 +98,77 @@ public:
         }
 
         m_low_frequency_component_only = props.get<bool>("low_frequency_component_only", true);
+
+        m_enable_motion_compensation = props.get<bool>("enable_motion_compensation", false); // 新增
+
+        m_enable_delay_compensation = props.get<bool>("enable_delay_compensation", false); // 新增
+
+        // 新增：系统延迟时间（单位：秒）
+        m_system_delay = props.get<ScalarFloat>("system_delay", 0.0f); // 默认无延迟
+
+        kalman_filter = KalmanFilter<Float, Spectrum>(m_system_delay, 0.01f, 0.001f, 0.1f);
+
+        std::cout << "DopplerToF: motion_compensation = " << (m_enable_motion_compensation ? "enabled" : "disabled") << std::endl;
+
+        std::cout << "DopplerToF: system_delay = " << m_system_delay << " s" << std::endl;
     }
     
-
-    Float eval_modulation_weight(Float ray_time, Float path_length) const
-    {
-        Float w_g = 2 * M_PI * m_illumination_modulation_frequency_mhz * 1e6;
-        Float w_d = 2 * M_PI / m_time * m_hetero_frequency;
-        Float phi = (2 * M_PI * m_illumination_modulation_frequency_mhz) / 300 * path_length;
+    // 支持相机运动补偿的多普勒调制权重计算
+    Float eval_modulation_weight(Float ray_time, Float path_length, const Vector3f &sensor_dir = Vector3f(0.f)) const {
+        static const Float c = 299792458.0f; // 精确光速 (m/s)
         
-        if(m_low_frequency_component_only){
-            Float t = w_d * ray_time + m_sensor_modulation_phase_offset + phi;
-            Float sg_t = 0.5 * m_illumination_modulation_scale * eval_modulation_function_value_low_pass<Float>(t, m_wave_function_type);
-            return sg_t;
+        Float w_g = 2.f * M_PI * m_illumination_modulation_frequency_mhz * 1e6f;
+        Float w_d = 2.f * M_PI / m_time * m_hetero_frequency;
+        Float tof = path_length / c;
+
+        // 引入系统延迟的影响
+        Float delayed_time = ray_time + m_system_delay;
+        
+        // 传感器运动引起的位移和相位
+        Vector3f sensor_offset = m_sensor_velocity * tof;
+        Float sensor_phase = w_g * dr::dot(sensor_offset, sensor_dir) / c;
+        
+        // 基础相位（静态传感器）
+        Float phi_static = w_g * path_length / c;
+        
+        // 系统延迟引入的相位偏移
+        Float delay_phase = w_g * m_system_delay;
+
+        // 总相位（包含传感器运动和系统延迟）
+        Float phi = phi_static + sensor_phase + delay_phase;
+
+        // 根据开关决定是否补偿传感器运动
+        if (m_enable_motion_compensation) {
+            // 补偿传感器运动，但考虑系统延迟的影响
+            // 计算传感器速度在视线方向上的投影（点积）
+            Float sensor_vel_proj = dr::dot(m_sensor_velocity, sensor_dir);
+            Float compensated_sensor_phase = sensor_phase - w_g * sensor_vel_proj * m_system_delay / c;
+            phi -= compensated_sensor_phase; // 补偿传感器运动
+        }
+
+        // 根据开关决定是否补偿系统延迟
+        if (m_enable_delay_compensation) {
+            // 使用卡尔曼滤波器动态补偿系统延迟
+            Float estimated_delay = kalman_filter.estimate_delay(m_system_delay);
+            phi -= w_g * estimated_delay; // 补偿系统延迟
+        }
+
+        if (m_low_frequency_component_only) {
+            Float t = w_d * delayed_time + m_sensor_modulation_phase_offset + phi;
+            return 0.5f * m_illumination_modulation_scale * 
+                eval_modulation_function_value_low_pass<Float>(t, m_wave_function_type);
         }
         
-        Float t1 = w_g * ray_time - phi;
-        Float t2 = (w_g + w_d) * ray_time  + m_sensor_modulation_phase_offset;
-        Float g_t = m_illumination_modulation_scale * eval_modulation_function_value<Float>(t1, m_wave_function_type) + m_illumination_modulation_offset;
+        Float t1 = w_g * delayed_time - phi;
+        Float t2 = (w_g + w_d) * delayed_time + m_sensor_modulation_phase_offset;
+        Float g_t = m_illumination_modulation_scale * 
+                    eval_modulation_function_value<Float>(t1, m_wave_function_type) + 
+                    m_illumination_modulation_offset;
         Float s_t = eval_modulation_function_value<Float>(t2, m_wave_function_type);
+        
         return s_t * g_t;
     }
+
 
     std::pair<Spectrum, Bool> sample(const Scene *scene,
                                      Sampler *sampler,
@@ -108,6 +185,8 @@ public:
 
         Ray3f ray                     = Ray3f(ray_);
         ray.time = dr::select(ray.time < m_time, ray.time, ray.time - m_time);
+        // 计算相机朝向（假设为射线方向的反方向）
+        Vector3f sensor_dir = -ray.d;
 
         Spectrum throughput           = 1.f;
         Spectrum result               = 0.f;
@@ -174,7 +253,7 @@ public:
 
                 // Compute MIS weight for emitter sample from previous bounce
                 Float mis_bsdf = mis_weight(prev_bsdf_pdf, em_pdf);
-                Float length_weight = eval_modulation_weight(ray.time, path_length);
+                Float length_weight = eval_modulation_weight(ray.time, path_length, sensor_dir);
 
 
                 // Accumulate, being careful with polarization (see spec_fma)
@@ -235,7 +314,7 @@ public:
                 Float mis_em =
                     dr::select(ds.delta, 1.f, mis_weight(ds.pdf, bsdf_pdf));
                 Float em_path_length = path_length + ds.dist;
-                Float length_weight = eval_modulation_weight(ray.time, em_path_length);
+                Float length_weight = eval_modulation_weight(ray.time, em_path_length, sensor_dir);
 
                 // Accumulate, being careful with polarization (see spec_fma)
                 result[active_em] = spec_fma(
@@ -303,7 +382,7 @@ public:
     // =============================================================
 
     std::string to_string() const override {
-        return tfm::format("DopplerToFPathIntegrator[\n"
+        return tfm::format("DopplerToFPathMotionCompensationIntegrator[\n"
             "  max_depth = %u,\n"
             "  rr_depth = %u\n"
             "]", m_max_depth, m_rr_depth);
@@ -332,6 +411,7 @@ public:
 
     MI_DECLARE_CLASS()
 private:
+    mutable KalmanFilter<Float, Spectrum> kalman_filter; // 卡尔曼滤波器实例
     ScalarFloat m_time;
     ScalarFloat m_illumination_modulation_frequency_mhz;
     ScalarFloat m_illumination_modulation_scale;
@@ -341,8 +421,12 @@ private:
     ScalarFloat m_hetero_frequency;
     EWaveformType m_wave_function_type;
     bool m_low_frequency_component_only;
+    Vector3f m_sensor_velocity; // 新增：相机速度
+    ScalarFloat m_system_delay; // 新增：系统延迟时间（单位：秒）
+    bool m_enable_motion_compensation; // 新增：运动补偿开关
+    bool m_enable_delay_compensation; // 新增：延迟补偿开关
 };
 
-MI_IMPLEMENT_CLASS_VARIANT(DopplerToFPathIntegrator, MonteCarloIntegrator)
-MI_EXPORT_PLUGIN(DopplerToFPathIntegrator, "Doppler ToF Path Tracer integrator");
+MI_IMPLEMENT_CLASS_VARIANT(DopplerToFPathMotionCompensationIntegrator, MonteCarloIntegrator)
+MI_EXPORT_PLUGIN(DopplerToFPathMotionCompensationIntegrator, "Doppler ToF Path Motion Compensation Integrator");
 NAMESPACE_END(mitsuba)

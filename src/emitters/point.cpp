@@ -97,6 +97,8 @@ public:
         }
     }
 
+    
+
     std::pair<Ray3f, Spectrum> sample_ray(Float time, Float wavelength_sample,
                                           const Point2f & /*pos_sample*/,
                                           const Point2f &dir_sample,
@@ -108,9 +110,9 @@ public:
 
         weight *= 4.f * dr::Pi<Float>;
         if(m_transform){
-            auto new_m_to_world = m_transform->eval(time);
-            Point3f light_pos = new_m_to_world * Point3f(0.f);
-            Ray3f ray(light_pos,
+            //auto new_m_to_world = m_transform->eval(time);
+            //Point3f light_pos = new_m_to_world * Point3f(0.f);
+            Ray3f ray(get_position(time),
                   warp::square_to_uniform_sphere(dir_sample), time,
                   wavelengths);
             return { ray, depolarizer<Spectrum>(weight) };
@@ -129,7 +131,8 @@ public:
         MI_MASKED_FUNCTION(ProfilerPhase::EndpointSampleDirection, active);
 
         DirectionSample3f ds;
-        ds.p       = m_position.value();
+        //ds.p       = m_position.value();
+        ds.p = get_position(it.time); // 关键：使用交互时间
         ds.n       = 0.f;
         ds.uv      = 0.f;
         ds.time    = it.time;
@@ -165,8 +168,11 @@ public:
         SurfaceInteraction3f si = dr::zeros<SurfaceInteraction3f>();
         si.wavelengths = it.wavelengths;
 
+        // 关键修改：使用ds.time重新计算光源位置，确保与sample_direction一致
+        Point3f light_pos = get_position(ds.time);
+
         UnpolarizedSpectrum spec = m_intensity->eval(si, active) *
-                                   dr::rcp(dr::squared_norm(ds.p - it.p));
+                                   dr::rcp(dr::squared_norm(light_pos - it.p));
 
         return depolarizer<Spectrum>(spec);
     }
@@ -213,6 +219,16 @@ public:
 private:
     ref<Texture> m_intensity;
     field<Point3f> m_position;
+
+    // 添加私有辅助方法
+    Point3f get_position(Float time) const {
+        // 检查动画是否实际包含运动
+        if (m_transform)
+            return m_transform->eval(time).translation(); // 直接提取translation
+        else
+            return m_position.value();
+    }
+
 };
 
 

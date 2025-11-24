@@ -1,6 +1,6 @@
 
 import mitsuba as mi
-mi.set_variant('cuda_rgb')
+mi.set_variant('llvm_rgb')
 import os
 import numpy as np
 from utils.image_utils import *
@@ -126,6 +126,81 @@ def run_scene_doppler_tof(
     # define integrator
     integrator_config_dict = {
         'type': 'dopplertofpath',
+        'is_doppler_integrator': True,
+        'max_depth': max_depth, 
+        'w_g': w_g, 
+        'time': exposure_time,
+        'hetero_frequency': hetero_frequency,
+        'hetero_offset': hetero_offset,
+        'antithetic_shift': antithetic_shift,
+        'time_sampling_method': time_sampling_method,
+        'path_correlation_depth': path_correlation_depth,
+        'low_frequency_component_only': low_frequency_component_only,
+        'wave_function_type': wave_function_type,
+        'use_stratified_sampling_for_each_interval': use_stratified_sampling_for_each_interval
+    }
+    integrator_doppler = mi.load_dict(integrator_config_dict)
+    
+    # render pass
+    single_pass_spp = min(1024, total_spp)
+    show_progress = kwargs.get("show_progress", False)
+    img_dop = render_image_multi_pass(scene, integrator_doppler, single_pass_spp, total_spp // single_pass_spp, show_progress=show_progress)
+    np.save(output_file, img_dop)
+
+    if kwargs.get("export_png", False):
+        save_tof_image(to_tof_image(img_dop, kwargs.get("exposure_time", 0.0015)), output_path, "%s.png" % expname, **kwargs)
+    
+    return img_dop
+
+
+
+def run_scene_doppler_motion_compensation_tof(
+    scene_name="cornell-box",
+    wave_function_type="sinusoidal",
+    low_frequency_component_only=True,
+    hetero_frequency=1.0, hetero_offset=0.0,
+    time_sampling_method="antithetic",
+    antithetic_shift=None, 
+    path_correlation_depth=16,
+    exposure_time=0.0015,
+    w_g=30,
+    max_depth=4,
+    use_stratified_sampling_for_each_interval=True,
+    exit_if_file_exists=True,
+    base_dir=None,
+    expname=None,
+    scene=None,
+    scene_xml=None,
+    total_spp=1024,
+    output_path=None,
+    **kwargs
+):
+    if output_path is None:
+        output_path = os.path.join(scene_name, wave_function_type)
+
+    output_path = os.path.join(base_dir, output_path, "freq_%.3f_offset_%.3f" % (hetero_frequency, hetero_offset))
+    output_file = os.path.join(output_path, "%s.npy" % expname)
+
+    # check file already exists
+    if os.path.exists(output_file) and exit_if_file_exists:
+        print("File already exists!")
+        return np.load(output_file)
+    else:
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+    
+    if antithetic_shift is None:
+        if time_sampling_method == "antithetic":
+            antithetic_shift = 0.5
+        else:
+            antithetic_shift = 0.0
+
+    if scene is None:
+        scene = mi.load_file(scene_xml)
+
+    # define integrator
+    integrator_config_dict = {
+        'type': 'dopplertofpath_motion_compensation',
         'is_doppler_integrator': True,
         'max_depth': max_depth, 
         'w_g': w_g, 

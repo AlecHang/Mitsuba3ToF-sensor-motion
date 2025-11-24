@@ -16,6 +16,7 @@ def run_scene(
     spp=1024,
     repeat = 1
 ):
+    #scene = mi.load_file("../../scenes/%s/scene_v3_doppler_motion_compensation.xml" % (scene_name))
     scene = mi.load_file("../../scenes/%s/scene_v3_doppler.xml" % (scene_name))
     image = None
     for i in trange(repeat):
